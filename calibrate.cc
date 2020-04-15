@@ -6,7 +6,7 @@
 int main()
 {
     Cache my_cache("127.0.0.1", "10002");
-    WorkloadGenerator wkld(2);
+    WorkloadGenerator wkld(2, 10000);
     unsigned int warm_up_iters = 10000;
     unsigned int test_iters = 100000;
     unsigned int count = 0;
@@ -19,8 +19,7 @@ int main()
             {
                 Cache::size_type s = 0;
 //                Cache::size_type key_size = wkld.key_size_dist();
-                Cache::size_type key_size = 3;
-                key_type key = wkld.random_key(key_size);
+                key_type key = wkld.random_key();
                 Cache::val_type val = my_cache.get(key, s);
                 if (i >= warm_up_iters)
                 {
@@ -32,17 +31,15 @@ int main()
         else if (request_type.compare("set") == 0)
             {
 //                Cache::size_type key_size = wkld.key_size_dist();
-                Cache::size_type key_size = 3;
-                key_type key = wkld.random_key(key_size);
+                key_type key = wkld.random_key();
 //                Cache::size_type val_size = wkld.val_size_dist();
-                Cache::size_type val_size = 10;
-                const Cache::val_type val = wkld.random_val(val_size);
+                const Cache::val_type val = wkld.random_val();
 //                std::cout << "key_size= " << key_size << ", key = " << key << std::endl;
 //                std::cout << "val_size= " << val_size << ", val = " ;
 //                for(int i = 0; i < val_size; i ++)
 //                    std::cout << val[i];
 //                std::cout << std::endl;
-                my_cache.set(key, val, val_size + 1);
+                my_cache.set(key, val, strlen(val) + 1);
                 delete[] val;
 //                std::cout << "set finished" << std::endl;
             }
@@ -50,8 +47,7 @@ int main()
         else if (request_type.compare("del") == 0)
             {
 //                Cache::size_type key_size = wkld.key_size_dist();
-                Cache::size_type key_size = 3;
-                key_type key = wkld.random_key(key_size);
+                key_type key = wkld.random_key();
                 my_cache.del(key);
             }
             
