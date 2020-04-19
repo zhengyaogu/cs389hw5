@@ -16,4 +16,6 @@ public:
     key_type random_key();
 
     const Cache::val_type random_val();
+
 };
+
