@@ -65,12 +65,31 @@ After changing the `set_del_ratio` from 10 to 1000, the `mean throughput` increa
 
 |maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
-|10000 | 1000 | -O0 | 10000 | 0 | 1.11e+07 |
+|10000 | 1000 | -O0 | 10000 | 0 | 1.11e+7 |
 
 Surprisingly, when we turn off the optimization flag for the server and benchmark, our program runs faster. This is probably because most requests take 0 millisecond (less than 1 millisecond), and the `-O0` flag somehow reduces the number of extreme values (requests that take more than 10 milliseconds).
 
 |maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
-|10000 | 10 | -O0 | 10000 | 0 | 5e+07 |
+|10000 | 10 | -O0 | 10000 | 0 | 5e+7 |
 
 It seems the pattern of `set_del_ratio` gets reversed when `-O3` gets changed to `-O0`. When the compilation flag is `-O3`, the mean throughput increases as  `set_del_ratio` increases; when the compilation flag is `-O0`, the mean throughput decreases as  `set_del_ratio` increases. I can only guess that this is caused by the optimization of the implementation of `std::unordered_set`.
+
+|maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
+| --- | --- | --- | --- | --- | --- |
+|10000 | 10 | -O0 | 100000 | 0 | 5e+7 |
+
+When the compilation flag is `-O0`, the increase of `key_pool_size` doesn't seem to affect the mean throughput. Keep increasing the 
+`key_pool_size`.
+
+|maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
+| --- | --- | --- | --- | --- | --- |
+|10000 | 10 | -O0 | 1000000 | 0 | 1e+8 |
+
+When the compilation flag is `-O0`, the increase of `key_pool_size` would increase the mean throughput. 
+
+|maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
+| --- | --- | --- | --- | --- | --- |
+|10000 | 10 | -O3 | 100000 | 0 | 36941.3 |
+
+When the compilation flag is `-O3`, the increase of `key_pool_size` would decrease the mean throughput. 
