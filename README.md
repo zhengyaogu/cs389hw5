@@ -48,7 +48,7 @@ We ran `benchmark_performance` with the same parameters, and the result `95th-pe
 The first thing that we need to test is the size of maximum cache memory, i.e. the `maxmem` variable of our cache. The guess is we kept get those 0 and 1 millisecond requests because our cache is so large that it doesn't need to evict anything.  \
 The second aspect we want to alter is the `set_del_ratio`. We want to see which request takes longer time to process with different mamximum cache memory. \
 The third aspect we want to test is the compilation option. We used command `-O3` in all of the previous sections, and we want to see what would happen if we change it. \
-The last aspect we want to test is the  `key_pool_size`. This variable directly controls the number of all possible keys we might generate in the benchmark. The guess is increasing  `key_pool_size` should have a similar effect to decreasing `maxmem`, because they both make the cache evict more keys. \
+The last aspect we want to test is the  `key_pool_size`. This variable directly controls the number of all possible keys we might generate in the benchmark. The guess is increasing  `key_pool_size` should have a similar effect to decreasing `maxmem`, because they both make the cache evict more keys. 
 |Size(byte) | Time(ns)|
 | --- | --- |
 |256| 0.0879019|
