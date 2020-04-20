@@ -45,7 +45,7 @@ Most requests take less than 1 millisecond, where the requests that take more th
 We ran `benchmark_performance` with the same parameters, and the result `95th-percentile latency` is 0, which means more than 95% requests take less than 1 millisecond to process. The `mean throughput` is 24950.1, so our program can process about 25k requests per second.
 |maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
-|1000000 | 10| -O3 | 10000 | 0 | 24950.1|
+|1000000 | 10| -O3 | 10000 | 0 | 1e+8|
 
 ### Sensitivity Testing
 The first thing that we need to test is the size of maximum cache memory, i.e. the `maxmem` variable of our cache. The guess is we kept get those 0 and 1 millisecond requests because our cache is so large that it doesn't need to evict anything.  \
@@ -54,12 +54,23 @@ The third aspect we want to test is the compilation option. We used command `-O3
 The last aspect we want to test is the  `key_pool_size`. This variable directly controls the number of all possible keys we might generate in the benchmark. The guess is increasing  `key_pool_size` should have a similar effect to decreasing `maxmem`, because they both make the cache evict more keys. 
 |maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
-|10000 | 10| -O3 | 10000 | 0 | 15946.4 |
+|10000 | 10| -O3 | 10000 | 0 | 42973.8|
 
-By changing the `maxmem` from 10^6 to 10^4, though the `95th_latency` doesn't change, the `mean throughput` decreases nearly a half. This confirms our guess that smaller `maxmem` will cause the cache to evict more things and increase latency. 
+By changing the `maxmem` from 10^6 to 10^4, though the `95th_latency` doesn't change, the `mean throughput` decreases dramatically. This confirms our guess that smaller `maxmem` will cause the cache to evict more things and increase latency. 
 |maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
-|10000 | 1000| -O3 | 10000 | 0 | 68728.5 |
+|10000 | 1000| -O3 | 10000 | 0 | 109649 |
 
-After changing the `set_del_ratio` from 10 to 1000, the `mean throughput` increases nearly 3 times. This original guess is when `maxmem` is limited, eviction is extremely expensive. A higher `set_del_ratio` should force the cache to evict many more times and result in a lower `mean throughput`. However, the data shows the exact opposite. Let's decrease `maxmem` once more:
+After changing the `set_del_ratio` from 10 to 1000, the `mean throughput` increases nearly 3 times. This original guess is when `maxmem` is limited, eviction is extremely expensive. A higher `set_del_ratio` should force the cache to evict many more times and result in a lower `mean throughput`. However, the data shows the exact opposite. When `maxmem` is limited, the `del` operation is actually more expensive than the `set` operation.
 
+|maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
+| --- | --- | --- | --- | --- | --- |
+|10000 | 1000 | -O0 | 10000 | 0 | 1.11e+07 |
+
+Surprisingly, when we turn off the optimization flag for the server and benchmark, our program runs faster. This is probably because most requests take 0 millisecond (less than 1 millisecond), and the `-O0` flag somehow reduces the number of extreme values (requests that take more than 10 milliseconds).
+
+|maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
+| --- | --- | --- | --- | --- | --- |
+|10000 | 10 | -O0 | 10000 | 0 | 5e+07 |
+
+It seems the pattern of `set_del_ratio` gets reversed when `-O3` gets changed to `-O0`. When the compilation flag is `-O3`, the mean throughput increases as  `set_del_ratio` increases; when the compilation flag is `-O0`, the mean throughput decreases as  `set_del_ratio` increases. I can only guess that this is caused by the optimization of the implementation of `std::unordered_set`.
