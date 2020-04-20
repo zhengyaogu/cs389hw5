@@ -49,10 +49,6 @@ The first thing that we need to test is the size of maximum cache memory, i.e. t
 The second aspect we want to alter is the `set_del_ratio`. We want to see which request takes longer time to process with different mamximum cache memory. \
 The third aspect we want to test is the compilation option. We used command `-O3` in all of the previous sections, and we want to see what would happen if we change it. \
 The last aspect we want to test is the  `key_pool_size`. This variable directly controls the number of all possible keys we might generate in the benchmark. The guess is increasing  `key_pool_size` should have a similar effect to decreasing `maxmem`, because they both make the cache evict more keys. 
-|Size(byte) | Time(ns)|
-| --- | --- |
-|256| 0.0879019|
-|512| 1.40934|
-|1024| 0.979602|
-|2048|0.500426|
-|4096 |0.491306|
+|Maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Troughput |
+| --- | --- | --- | --- | --- | --- |
+|10000 | 10| -O3 | 10000 | | |
