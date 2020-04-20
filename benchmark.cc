@@ -74,12 +74,25 @@ std::pair<double, double> baseline_performance(int nreq, double set_del_ratio, i
 
 int main()
 {
-    auto my_vector = baseline_latencies(100, 1, 1000);
+    /*
+    auto my_vector = baseline_latencies(100000, 10, 10000);
     std::sort(my_vector.begin(), my_vector.end());
-    for(int i = 0; i < my_vector.size(); i ++)
-        if(i == 0 || my_vector[i] != my_vector[i - 1])
-            std::cout << i << " " << my_vector[i] << std::endl;
-    auto result = baseline_performance(1000, 10, 1000);
+    int j = 0;
+    for(unsigned int i = 0; i < my_vector.size(); i ++)
+    {
+        if(my_vector[i] != my_vector[j])
+        {
+            std::cout << my_vector[j] / double(my_vector.size())  << " " << i << std::endl;
+            j = i;
+        }
+        if(i == my_vector.size() - 1)
+        {
+            std::cout << my_vector[i] / double(my_vector.size())  << " " << i + 1 << std::endl;
+        }
+    }
+    */
+    auto result = baseline_performance(100000, 10, 100000);
     std::cout << result.first << " " << result.second << std::endl;
+    
     return 0;
 }

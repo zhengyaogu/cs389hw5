@@ -30,7 +30,7 @@ workload_test:
 	./test.o [workload]
 
 execute_server:
-	./server.o -m 101010
+	./server.o -m 10000
 	
 execute_client:
 	./test_client.o
