@@ -55,6 +55,7 @@ The last aspect we want to test is the  `key_pool_size`. This variable directly 
 |Maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
 |10000 | 10| -O3 | 10000 | 0 | 15946.4 |
+
 By chaning the `maxmem` from 10^6 to 10^4, though the `95th_latency` doesn't change, the mean throughput decreases nearly a half. This confirms our guess that smaller `maxmem` will cause the cache to evict more things and increase latency. 
 |Maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
