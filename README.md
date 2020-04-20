@@ -43,12 +43,19 @@ Our performance is very stable when the cache's maxmem is extremely high. More t
 ![My Graph](https://github.com/zhengyaogu/cs389hw5/blob/master/cdf.png)\
 Most requests take less than 1 millisecond, where the requests that take more than 8 milliseconds should be the ones that change the size of our hash table(unordered set) in the cache. \
 We ran `benchmark_performance` with the same parameters, and the result `95th-percentile latency` is 0, which means more than 95% requests take less than 1 millisecond to process. The `mean throughput` is 24950.1, so our program can process about 25k requests per second.
+|Maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
+| --- | --- | --- | --- | --- | --- |
+|1000000 | 10| -O3 | 10000 | 0 | 24950.1|
 
 ### Sensitivity Testing
 The first thing that we need to test is the size of maximum cache memory, i.e. the `maxmem` variable of our cache. The guess is we kept get those 0 and 1 millisecond requests because our cache is so large that it doesn't need to evict anything.  \
 The second aspect we want to alter is the `set_del_ratio`. We want to see which request takes longer time to process with different mamximum cache memory. \
 The third aspect we want to test is the compilation option. We used command `-O3` in all of the previous sections, and we want to see what would happen if we change it. \
 The last aspect we want to test is the  `key_pool_size`. This variable directly controls the number of all possible keys we might generate in the benchmark. The guess is increasing  `key_pool_size` should have a similar effect to decreasing `maxmem`, because they both make the cache evict more keys. 
-|Maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Troughput |
+|Maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
 | --- | --- | --- | --- | --- | --- |
-|10000 | 10| -O3 | 10000 | | |
+|10000 | 10| -O3 | 10000 | 0 | 15946.4 |
+By chaning the `maxmem` from 10^6 to 10^4, though the `95th_latency` doesn't change, the mean throughput decreases nearly a half. This confirms our guess that smaller `maxmem` will cause the cache to evict more things and increase latency. 
+|Maxmem | set_del_ratio | Compilation Option | key_pool_size| 95th_latency | Mean Throughput |
+| --- | --- | --- | --- | --- | --- |
+|10000 | 1000| -O3 | 10000 | 0 |  |
