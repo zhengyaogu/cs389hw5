@@ -92,4 +92,6 @@ When the compilation flag is `-O0`, the increase of `key_pool_size` would increa
 | --- | --- | --- | --- | --- | --- |
 |10000 | 10 | -O3 | 100000 | 0 | 36941.3 |
 
-When the compilation flag is `-O3`, the increase of `key_pool_size` would decrease the mean throughput. 
+When the compilation flag is `-O3`, the increase of `key_pool_size` would decrease the mean throughput. \
+
+The optimization flag greatly affects the performance. For reason unknow, it would reverse the effect of `key_pool_size` and `set_del_ratio` toward the program. 
