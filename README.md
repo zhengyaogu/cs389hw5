@@ -39,7 +39,7 @@ probability in the smaller first segment, thus increasing the temporality overal
 We found that when `set/del = 10`, `key_num = 10,000`, and `n_seg = 100`, we achieve a hit rate around 82% consistently.
 
 ### Benchmark
-Our performance is very stable when the cache's maxmem is extremely high. More than 95% requests always take less than 2 milliseconds, and most of time, 1 millisecond. Nevertheless, we set the request numbers to 10^5. This is the cumulative distribution function of our result. \
+Our performance is very stable when the cache's maxmem is extremely high. More than 95% requests always take less than 2 milliseconds, and most of time, 1 millisecond. Nevertheless, we set the request numbers to 10^5. This is the `cumulative distribution function` of our result. \
 ![My Graph](https://github.com/zhengyaogu/cs389hw5/blob/master/cdf.png)\
 Most requests take less than 1 millisecond, where the requests that take more than 8 milliseconds should be the ones that change the size of our hash table(unordered set) in the cache. \
-We ran benchmark_performance with the same parameters, and the result 95th-percentile latency is 0, which means more than 95% requests take less than 1 millisecond to process. The mean throughput is 24950.1, so our program can process about 25k requests per second.
+We ran `benchmark_performance` with the same parameters, and the result `95th-percentile latency` is 0, which means more than 95% requests take less than 1 millisecond to process. The `mean throughput` is 24950.1, so our program can process about 25k requests per second.
