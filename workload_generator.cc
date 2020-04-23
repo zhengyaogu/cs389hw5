@@ -89,37 +89,6 @@ class WorkloadGenerator::Impl
     Impl(double set_del_ratio, unsigned int key_num)
     : uni_dist(0.0, 1.0), key_num(key_num)
     {
-<<<<<<< HEAD
-        set_del_ratio = std::clamp(set_del_ratio, double(0.0), double(1.0));
-        del_rate = (1 - get_rate) / (1 + set_del_ratio);
-        set_rate = set_del_ratio * del_rate;
-
-        for (unsigned int i = 0; i < key_num; i++)
-        {
-            auto key_size = key_size_dist();
-            auto key = random_key(key_size);
-            key_pool.push_back(key);
-        }
-    }
-    
-    ~Impl(){}
-
-    key_type prompt_key()
-    {
-        double u = uni_dist(generator);
-        unsigned int i = static_cast<unsigned int>(round(u * (key_num - 1)));
-        return key_pool.at(i);
-    }
-
-    const Cache::val_type prompt_val()
-    {
-        auto s = val_size_dist();
-        return random_val(s);
-    }
-
-};
-
-=======
 	    key_pool.reserve(key_num);
 
         set_del_ratio = std::clamp(set_del_ratio, double(0.0), double(1010101.0));
@@ -163,7 +132,6 @@ class WorkloadGenerator::Impl
 
 };
 
->>>>>>> 75b1a902c1a1abf2a01463094c5553cdf8451c49
 WorkloadGenerator::WorkloadGenerator(double set_del_ratio, unsigned int key_num)
 {
     pImpl_ = std::unique_ptr<Impl>(new Impl(set_del_ratio, key_num));
